@@ -33,4 +33,3 @@ var cmdGenerate = &cobra.Command{
 func init() {
 	cmdRoot.AddCommand(cmdGenerate)
 }
-

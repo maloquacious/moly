@@ -21,6 +21,7 @@ package maps
 import (
 	"bytes"
 	"fmt"
+	"math"
 )
 
 type svg struct {
@@ -41,33 +42,58 @@ type circle struct {
 		stroke      string
 		strokeWidth string
 	}
-	text string
+	points []point
+	text   string
 }
 
-func (tiles Tiles) ToSvg() *svg {
-	size := 12.0
-	width, height := 2*size, 2*size
-	radius := size * 0.88
+type point struct {
+	x, y float64
+}
+
+func (tiles Tiles) ToSvg(hexes, mono bool) *svg {
+	width, height := 2*TILESIZE, math.Sqrt(3)*TILESIZE
+
+	radius := TILESIZE * 0.88
 
 	s := svg{id: "worldmap", fontSize: 14}
 
+	var points []point
+	for theta := 0.0; theta < math.Pi*2.0; theta += math.Pi / 3.0 {
+		points = append(points, point{x: radius * math.Cos(theta), y: radius * math.Sin(theta)})
+	}
 	// create the circles
 	for _, t := range tiles {
-		offset := 0.0
-		if t.Col%2 == 1 {
-			offset += height / 2
-		}
+		// cy and cx are the center point of the cell
+		cx, cy := t.centerPoint()
+
 		c := &circle{
 			row:    t.Row,
 			col:    t.Col,
-			cy:     height + float64(t.Row)*height + offset,
-			cx:     width + float64(t.Col)*width,
+			cy:     cy,
+			cx:     cx,
 			radius: radius,
 			text:   string(t.SaveChar),
 		}
-		c.style.fill = t.Color.ToFill()
+		if mono {
+			c.style.fill = "none"
+		} else {
+			c.style.fill = t.Color.ToFill()
+		}
 		c.style.stroke = "grey"
 		c.style.strokeWidth = "2px"
+
+		if hexes {
+			for _, p := range points {
+				px, py := c.cx+p.x, c.cy+p.y
+				c.points = append(c.points, point{x: px, y: py})
+				if s.viewBox.height < py {
+					s.viewBox.height = py
+				}
+				if s.viewBox.width < px {
+					s.viewBox.width = px
+				}
+			}
+		}
 
 		s.circles = append(s.circles, c)
 		if s.viewBox.height < c.cy {
@@ -83,27 +109,37 @@ func (tiles Tiles) ToSvg() *svg {
 	return &s
 }
 
-func (s *svg) Bytes() []byte {
+func (s *svg) Bytes(noScale bool) []byte {
 	b := &bytes.Buffer{}
 
 	b.WriteString("<svg")
 	if s.id != "" {
 		b.WriteString(fmt.Sprintf(" id=%q", s.id))
 	}
-	b.WriteString(fmt.Sprintf(` width="%f" height="%f"`, s.viewBox.width+40, s.viewBox.height+40))
-	b.WriteString(fmt.Sprintf(` viewBox="%f %f %f %f"`, s.viewBox.minX, s.viewBox.minY, s.viewBox.width+40, s.viewBox.height+40))
+	if !noScale {
+		b.WriteString(fmt.Sprintf(` width="%f" height="%f"`, s.viewBox.width+TILESIZE, s.viewBox.height+TILESIZE))
+	}
+	b.WriteString(fmt.Sprintf(` viewBox="%f %f %f %f"`, s.viewBox.minX, s.viewBox.minY, s.viewBox.width, s.viewBox.height))
 	b.WriteString(` xmlns="http://www.w3.org/2000/svg">`)
 	b.WriteByte('\n')
 
 	for _, c := range s.circles {
-		b.WriteString(fmt.Sprintf(`<circle cx="%f" cy="%f" r="%f" fill=%q stroke=%q stroke-width=%q />`, c.cx, c.cy, c.radius, c.style.fill, c.style.stroke, c.style.strokeWidth))
+		if len(c.points) == 0 {
+			b.WriteString(fmt.Sprintf(`<circle cx="%f" cy="%f" r="%f" fill=%q stroke=%q stroke-width=%q />`, c.cx, c.cy, c.radius, c.style.fill, c.style.stroke, c.style.strokeWidth))
+		} else {
+			b.WriteString(fmt.Sprintf(`<polygon fill=%q  stroke=%q stroke-width=%q points="`, c.style.fill, c.style.stroke, c.style.strokeWidth))
+			for _, p := range c.points {
+				b.WriteString(fmt.Sprintf("%f,%f ", p.x, p.y))
+			}
+			b.WriteString(`"></polygon>`)
+		}
 		b.WriteByte('\n')
 
-		//if c.text != "" {
-		//	yOffset := float64(s.fontSize) * -0.2
-		//	b.WriteString(fmt.Sprintf(`<text x="%f" y="%f" text-anchor="middle" fill="black" font-size="%d" font-weight="bold">%s</text>`, c.cx, c.cy-yOffset, s.fontSize, c.text))
-		//	b.WriteByte('\n')
-		//}
+		if c.text != "" {
+			yOffset := float64(s.fontSize) * -0.2
+			b.WriteString(fmt.Sprintf(`<text x="%f" y="%f" text-anchor="middle" fill="black" font-size="%d" font-weight="bold">%s</text>`, c.cx, c.cy-yOffset, s.fontSize, c.text))
+			b.WriteByte('\n')
+		}
 	}
 
 	b.WriteString("</svg>\n")

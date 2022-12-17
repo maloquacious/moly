@@ -36,5 +36,5 @@ func (e *Engine) Loop() error {
 
 // tick is one iteration of the game loop
 func (e *Engine) tick(tick int) error {
-	return	nil
+	return nil
 }

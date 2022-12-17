@@ -21,21 +21,21 @@ package enums
 type Color int
 
 const (
-	ColorNone  Color = iota
-	ColorOcean       = 1
-	ColorTwo         = 2
+	ColorNone     Color = iota
+	ColorOcean          = 1
+	ColorTwo            = 2
 	ColorThree          = 3
-	ColorFour  = 4
-	ColorPlain = 5
-	ColorSix    = 6
-	ColorDesert = 7
-	ColorEight    = 8
-	ColorMountain = 9
-	ColorTen    = 10
-	ColorSwamp  = 11
-	ColorTwelve   = 12
-	ColorForest   = 13
-	ColorFourteen = 14
+	ColorFour           = 4
+	ColorPlain          = 5
+	ColorSix            = 6
+	ColorDesert         = 7
+	ColorEight          = 8
+	ColorMountain       = 9
+	ColorTen            = 10
+	ColorSwamp          = 11
+	ColorTwelve         = 12
+	ColorForest         = 13
+	ColorFourteen       = 14
 	ColorSixteen        = 16
 	ColorNineteen       = 19
 	ColorNegOne         = -1

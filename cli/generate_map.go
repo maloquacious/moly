@@ -39,8 +39,8 @@ var cmdGenerateMap = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
-		svg := mc.ToSvg()
-		cobra.CheckErr(os.WriteFile("worldmap.svg", svg.Bytes(false), 0644))
+		svg := mc.ToSvg(true, argsGenerateMap.noColor)
+		cobra.CheckErr(os.WriteFile("worldmap.svg", svg.Bytes(!argsGenerateMap.noScale), 0644))
 
 		return nil
 	},
@@ -53,6 +53,8 @@ var argsGenerateMap struct {
 	gateFileName      string
 	landFileName      string
 	locationFileName  string
+	noColor           bool
+	noScale           bool
 	regionFileName    string
 	roadFileName      string
 	seedFileName      string
@@ -61,10 +63,12 @@ var argsGenerateMap struct {
 func init() {
 	cmdGenerate.AddCommand(cmdGenerateMap)
 	// inputs
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.mapFileName, "map-data", "map-data.txt", "map data to import")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.mapFileName, "map-data", "worldmap.txt", "map data to import")
 	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.cityFileName, "city-data", "cities.json", "city name data to import")
 	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.landFileName, "land-data", "lands.json", "land data to import")
 	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.regionFileName, "region-data", "regions.json", "region data to import")
+	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.noColor, "no-color", argsGenerateMap.noColor, "do not color map")
+	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.noScale, "no-scale", argsGenerateMap.noScale, "do not scale map")
 
 	// outputs
 	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.continentFileName, "continent-data", "continents.json", "continent data to export")

@@ -21,7 +21,7 @@ package enums
 type Terrain int
 
 const (
-	TerrNone        Terrain = iota
+	TerrNone Terrain = iota
 	TerrLand
 	TerrOcean
 	TerrForest
@@ -31,8 +31,8 @@ const (
 	TerrDesert
 	TerrWater
 	TerrIsland
-	TerrStoneCir            // circle of stones
-	TerrGrove               // mallorn grove
+	TerrStoneCir // circle of stones
+	TerrGrove    // mallorn grove
 	TerrBog
 	TerrCave
 	TerrCity
@@ -40,7 +40,7 @@ const (
 	TerrGrave
 	TerrRuins
 	TerrBattlefield
-	TerrEnchFor             // enchanted forest
+	TerrEnchFor // enchanted forest
 	TerrRockyHill
 	TerrTreeCir
 	TerrPits
@@ -48,8 +48,8 @@ const (
 	TerrOasis
 	TerrYewGrove
 	TerrSandPit
-	TerrSacGrove            // sacred grove
-	TerrPopField            // poppy field
+	TerrSacGrove // sacred grove
+	TerrPopField // poppy field
 	TerrTemple
-	TerrLair                // dragon lair
+	TerrLair // dragon lair
 )

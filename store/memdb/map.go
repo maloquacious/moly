@@ -19,10 +19,7 @@
 package memdb
 
 type Map struct {
-
 }
 
 type Hex struct {
-
 }
-

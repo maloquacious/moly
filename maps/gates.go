@@ -23,4 +23,3 @@ type Gate struct {
 	Key  int
 	Num  int // gates from here
 }
-

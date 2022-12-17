@@ -41,4 +41,3 @@ import "fmt"
 func rowColToRegion(row, col int) string {
 	return fmt.Sprintf("%d,%d", row, col)
 }
-
