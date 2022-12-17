@@ -16,53 +16,49 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package main
+package jsdb
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/maloquacious/moly/cli"
-	"github.com/maloquacious/moly/engine"
-	"github.com/maloquacious/moly/store/jsdb"
-	"log"
-	"math/rand"
-	"os"
-	"time"
+	"fmt"
 )
 
-func main() {
-	if err := godotenv.Load(".env.local"); err != nil {
-		log.Fatalf("main: %+v\n", err)
-	}
+// CoordsList is a list of coordinates
+type CoordsList []*Coords
 
-	started := time.Now()
-	rand.Seed(started.UnixNano())
-
-	rv := 0
-	if err := cli.Execute(); err != nil {
-		log.Printf("\n%+v\n", err)
-		rv = 2
-	}
-
-	log.Printf("\n")
-	log.Printf("completed in %v\n", time.Now().Sub(started))
-
-	os.Exit(rv)
+func (c CoordsList) Len() int {
+	return len(c)
 }
 
-func run() error {
-	data, err := os.ReadFile("worldmap.json")
-	if err != nil {
-		return err
+func (c CoordsList) Less(i, j int) bool {
+	if c[i].Q < c[j].Q {
+		return true
+	} else if c[i].Q == c[j].Q {
+		return c[i].R < c[j].R
 	}
-	m, err := jsdb.MapLoad(data)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		log.Printf("%s: %v\n", k, v)
-	}
-
-	e := engine.New()
-	return e.Loop()
+	return false
 }
 
+func (c CoordsList) Swap(i, j int) {
+	c[i], c[j] = c[j], c[i]
+}
+
+// Coords are the hex-grid coordinates
+type Coords struct {
+	Q int `json:"q"`
+	R int `json:"r"`
+	S int `json:"s"`
+}
+
+func (c Coords) Less(a Coords) bool {
+	if c.Q < a.Q {
+		return true
+	} else if c.Q == a.Q {
+		return c.R < a.R
+	}
+	return false
+}
+
+// String implements the Stringer interface
+func (c Coords) String() string {
+	return fmt.Sprintf("%d,%d", c.Q, c.R)
+}
