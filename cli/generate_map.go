@@ -41,6 +41,7 @@ var cmdGenerateMap = &cobra.Command{
 		}
 		svg := mc.ToSvg(true, argsGenerateMap.noColor)
 		cobra.CheckErr(os.WriteFile("worldmap.svg", svg.Bytes(!argsGenerateMap.noScale), 0644))
+		cobra.CheckErr(mc.ToPNG("worldmap.png"))
 
 		return nil
 	},

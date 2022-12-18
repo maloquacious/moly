@@ -80,3 +80,61 @@ func (c Color) ToFill() string {
 	}
 	return "aliceblue"
 }
+
+var (
+	cAliceBlue, cDesert, cForest, cMountain, cOceanBlue, cOlive, cOrange, cPlain, cSixteen, cSwamp struct {
+		r, g, b float64
+	}
+)
+
+func init() {
+	cAliceBlue.r, cAliceBlue.g, cAliceBlue.b = 0xfa, 0xf8, 0xff
+	cDesert.r, cDesert.g, cDesert.b = 0xf4, 0xa4, 0x60
+	cForest.r, cForest.g, cForest.b = 0x22, 0x8b, 0x22
+	cMountain.r, cMountain.g, cMountain.b= 0xa0, 0x52, 0x5d
+	cOceanBlue.r,cOceanBlue.g,cOceanBlue.b = 0x1e, 0x90, 0xff
+	cOlive.r, cOlive.g, cOlive.b = 0x80, 0x80, 0x00
+	cOrange.r, cOrange.g, cOrange.b = 0xff, 0xa5, 0x00
+	cPlain.r,cPlain.g,cPlain.b = 0xff, 0xde, 0xad
+	cSixteen.r, cSixteen.g, cSixteen.b = 0xcd, 0x85, 0x3f
+	cSwamp.r, cSwamp.g, cSwamp.b = 0x9a, 0xcd, 0x32
+}
+func (c Color) ToRGB() (r,g,b float64) {
+	switch c {
+	case ColorOcean:
+		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
+	case ColorTwo:
+		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
+	case ColorThree:
+		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
+	case ColorFour:
+		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
+	case ColorPlain:
+		return cPlain.r, cPlain.g, cPlain.b
+	case ColorSix:
+		return cPlain.r, cPlain.g, cPlain.b
+	case ColorDesert:
+		return cDesert.r, cDesert.g, cDesert.b
+	case ColorEight:
+		return cDesert.r, cDesert.g, cDesert.b
+	case ColorMountain:
+		return cMountain.r, cMountain.g, cMountain.b
+	case ColorTen:
+		return cMountain.r, cMountain.g, cMountain.b
+	case ColorSwamp:
+		return cSwamp.r, cSwamp.g, cSwamp.b
+	case ColorTwelve:
+		return cSwamp.r, cSwamp.g, cSwamp.b
+	case ColorForest:
+		return cForest.r, cForest.g, cForest.b
+	case ColorFourteen:
+		return cForest.r, cForest.g, cForest.b
+	case ColorSixteen:
+		return cSixteen.r, cSixteen.g, cSixteen.b
+	case ColorNineteen:
+		return cOlive.r, cOlive.g, cOlive.b
+	case ColorNegOne:
+		return cOrange.r, cOrange.g, cOrange.b
+	}
+	return cAliceBlue.r, cAliceBlue.g, cAliceBlue.b
+}
