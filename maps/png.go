@@ -19,24 +19,36 @@
 package maps
 
 import (
+	"fmt"
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
+	"github.com/maloquacious/moly/enums"
+	"golang.org/x/image/font/gofont/goregular"
 )
 
 func (tiles Tiles) ToPNG(name string) error {
 	dc := gg.NewContext(6800, 7800)
 	dc.SetRGB(0, 0, 0)
-	//dc.SetRGB(0x1e/255.0, 0x90/255.0, 0xff/255.0)
 	dc.Clear()
+
+	font, err := truetype.Parse(goregular.TTF)
+	if err != nil {
+		return err
+	}
+	face := truetype.NewFace(font, &truetype.Options{Size: 14})
+	dc.SetFontFace(face)
 
 	// create the circles
 	for _, t := range tiles {
-		r, g, b := t.Color.ToRGB()
-		dc.SetRGB(r/255, g/255, b/255)
 		// cy and cx are the center point of the cell
 		cx, cy := t.centerPoint()
+		dc.SetColor(t.Color.ToRGB())
 		dc.DrawRegularPolygon(6, cx, cy, TILESIZE*0.88, 0)
-		//dc.DrawRegularPolygon(6, cx, cy, TILESIZE, 0)
 		dc.Fill()
+		if t.Terrain != enums.TerrOcean {
+			dc.SetRGB(0, 0, 0)
+			dc.DrawStringAnchored(fmt.Sprintf("%d %d", t.Col, t.Row), cx, cy-0.375*TILEHEIGHT, 0.5, 0.5)
+		}
 	}
 	return dc.SavePNG(name)
 }

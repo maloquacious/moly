@@ -70,7 +70,7 @@ func toTiles(cells [][]rune) Tiles {
 				Region:   rowColToRegion(row, col),
 				Depth:    2,
 				SaveChar: cells[row][col],
-				Color:    enums.ColorNegOne,
+				Color:    enums.ColorOrange,
 			}
 			tiles[coords] = tile
 
@@ -85,54 +85,54 @@ func toTiles(cells [][]rune) Tiles {
 			case ':':
 				tile.Is.SeaLane = true
 				tile.Terrain = enums.TerrOcean
-				tile.Color = enums.ColorTwo
+				tile.Color = enums.ColorOceanTwo
 			case '.':
 				tile.Terrain = enums.TerrOcean
-				tile.Color = enums.ColorTwo
+				tile.Color = enums.ColorOceanTwo
 			case '~':
 				tile.Is.SeaLane = true
 				tile.Terrain = enums.TerrOcean
-				tile.Color = enums.ColorThree
+				tile.Color = enums.ColorOceanThree
 			case ' ':
 				tile.Terrain = enums.TerrOcean
-				tile.Color = enums.ColorThree
+				tile.Color = enums.ColorOceanThree
 			case '"':
 				tile.Is.SeaLane = true
 				tile.Terrain = enums.TerrOcean
-				tile.Color = enums.ColorFour
+				tile.Color = enums.ColorOceanFour
 			case '\'':
 				tile.Terrain = enums.TerrOcean
-				tile.Color = enums.ColorFour
+				tile.Color = enums.ColorOceanFour
 			case 'p':
 				tile.Terrain = enums.TerrPlain
 				tile.Color = enums.ColorPlain
 			case 'P':
 				tile.Terrain = enums.TerrPlain
-				tile.Color = enums.ColorSix
+				tile.Color = enums.ColorPlainTwo
 			case 'd':
 				tile.Terrain = enums.TerrDesert
 				tile.Color = enums.ColorDesert
 			case 'D':
 				tile.Terrain = enums.TerrDesert
-				tile.Color = enums.ColorEight
+				tile.Color = enums.ColorDesertTwo
 			case 'm':
 				tile.Terrain = enums.TerrMountain
 				tile.Color = enums.ColorMountain
 			case 'M':
 				tile.Terrain = enums.TerrMountain
-				tile.Color = enums.ColorTen
+				tile.Color = enums.ColorMountainTwo
 			case 's':
 				tile.Terrain = enums.TerrSwamp
 				tile.Color = enums.ColorSwamp
 			case 'S':
 				tile.Terrain = enums.TerrSwamp
-				tile.Color = enums.ColorTwelve
+				tile.Color = enums.ColorSwampTwo
 			case 'f':
 				tile.Terrain = enums.TerrForest
 				tile.Color = enums.ColorForest
 			case 'F':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorFourteen
+				tile.Color = enums.ColorForestTwo
 			case 'o':
 				switch rand.Intn(10) + 1 {
 				case 1, 2, 3:
@@ -143,13 +143,13 @@ func toTiles(cells [][]rune) Tiles {
 					tile.Color = enums.ColorPlain
 				case 7, 8:
 					tile.Terrain = enums.TerrMountain
-					tile.Color = enums.ColorTen
+					tile.Color = enums.ColorMountainTwo
 				case 9:
 					tile.Terrain = enums.TerrSwamp
-					tile.Color = enums.ColorTwelve
+					tile.Color = enums.ColorSwampTwo
 				case 10:
 					tile.Terrain = enums.TerrDesert
-					tile.Color = enums.ColorEight
+					tile.Color = enums.ColorDesertTwo
 				}
 			case '?':
 				tile.Is.Hidden = true
@@ -168,13 +168,13 @@ func toTiles(cells [][]rune) Tiles {
 				tile.Is.RegionBoundary = true
 			case '{':
 				tile.Terrain = enums.TerrMountain
-				tile.Color = enums.ColorSixteen
+				tile.Color = enums.ColorMountainThree
 				tile.UldimFlag = 3
 				tile.Name = "Uldim pass"
 				tile.Is.RegionBoundary = true
 			case '}':
 				tile.Terrain = enums.TerrMountain
-				tile.Color = enums.ColorSixteen
+				tile.Color = enums.ColorMountainThree
 				tile.UldimFlag = 4
 				tile.Name = "Uldim pass"
 				tile.Is.RegionBoundary = true
@@ -194,35 +194,35 @@ func toTiles(cells [][]rune) Tiles {
 				tile.Name = "Mt. Olympus"
 			case '1':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 				tile.Is.SafeHaven = true
 			case '2':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 				tile.Is.SafeHaven = true
 			case '3':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 				tile.Is.SafeHaven = true
 			case '4':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 				tile.Is.SafeHaven = true
 			case '5':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 				tile.Is.SafeHaven = true
 			case '6':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 				tile.Is.SafeHaven = true
 			case '7':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 				tile.Is.SafeHaven = true
 			case '8':
 				tile.Terrain = enums.TerrForest
-				tile.Color = enums.ColorNineteen
+				tile.Color = enums.ColorForestThree
 			case '*':
 				tile.Terrain = enums.TerrLand
 			case '%':

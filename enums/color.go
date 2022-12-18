@@ -18,123 +18,120 @@
 
 package enums
 
+import "image/color"
+
 type Color int
 
 const (
-	ColorNone     Color = iota
-	ColorOcean          = 1
-	ColorTwo            = 2
-	ColorThree          = 3
-	ColorFour           = 4
-	ColorPlain          = 5
-	ColorSix            = 6
-	ColorDesert         = 7
-	ColorEight          = 8
-	ColorMountain       = 9
-	ColorTen            = 10
-	ColorSwamp          = 11
-	ColorTwelve         = 12
-	ColorForest         = 13
-	ColorFourteen       = 14
-	ColorSixteen        = 16
-	ColorNineteen       = 19
-	ColorNegOne         = -1
+	ColorNone          Color = iota
+	ColorOcean               = 1
+	ColorOceanTwo            = 2
+	ColorOceanThree          = 3
+	ColorOceanFour           = 4
+	ColorPlain               = 5
+	ColorPlainTwo            = 6
+	ColorDesert              = 7
+	ColorDesertTwo           = 8
+	ColorMountain            = 9
+	ColorMountainTwo         = 10
+	ColorSwamp               = 11
+	ColorSwampTwo            = 12
+	ColorForest              = 13
+	ColorForestTwo           = 14
+	ColorMountainThree       = 16
+	ColorForestThree         = 19
+	ColorOrange              = -1
 )
 
 func (c Color) ToFill() string {
 	switch c {
 	case ColorOcean:
 		return "darkblue"
-	case ColorTwo:
+	case ColorOceanTwo:
 		return "cornflowerblue"
-	case ColorThree:
+	case ColorOceanThree:
 		return "lightsteelblue"
-	case ColorFour:
+	case ColorOceanFour:
 		return "blue"
 	case ColorPlain:
 		return "navajowhite"
-	case ColorSix:
+	case ColorPlainTwo:
 		return "brown"
 	case ColorDesert:
 		return "sandybrown"
-	case ColorEight:
+	case ColorDesertTwo:
 		return "khaki"
 	case ColorMountain:
 		return "sienna"
-	case ColorTen:
+	case ColorMountainTwo:
 		return "saddlebrown"
 	case ColorSwamp:
 		return "yellowgreen"
-	case ColorTwelve:
+	case ColorSwampTwo:
 		return "seagreen"
 	case ColorForest:
 		return "forestgreen"
-	case ColorFourteen:
+	case ColorForestTwo:
 		return "darkolivegreen"
-	case ColorSixteen:
+	case ColorMountainThree:
 		return "peru"
-	case ColorNineteen:
+	case ColorForestThree:
 		return "olive"
-	case ColorNegOne:
+	case ColorOrange:
 		return "orange"
 	}
 	return "aliceblue"
 }
 
 var (
-	cAliceBlue, cDesert, cForest, cMountain, cOceanBlue, cOlive, cOrange, cPlain, cSixteen, cSwamp struct {
-		r, g, b float64
-	}
+	cAliceBlue = color.RGBA{R: 0xf0, G: 0xf8, B: 0xff} // alice blue
+	cDesert    = color.RGBA{R: 0xfa, G: 0xa4, B: 0x60} // sandy brown
+	cForest    = color.RGBA{R: 0x22, G: 0x8b, B: 0x22} // forest green
+	cMountain  = color.RGBA{R: 0xa0, G: 0x52, B: 0x2d} // sienna
+	cOceanBlue = color.RGBA{R: 0x41, G: 0x69, B: 0xe1} // royal blue
+	cOlive     = color.RGBA{R: 0x80, G: 0x80, B: 0x00} // olive
+	cOrange    = color.RGBA{R: 0xff, G: 0xa5, B: 0x00} // orange
+	cPlain     = color.RGBA{R: 0xff, G: 0xde, B: 0xad} // navajo white
+	cSixteen   = color.RGBA{R: 0xcd, G: 0x85, B: 0x3f} // peru
+	cSwamp     = color.RGBA{R: 0x9a, G: 0xcd, B: 0x32} // yellow green
 )
 
-func init() {
-	cAliceBlue.r, cAliceBlue.g, cAliceBlue.b = 0xfa, 0xf8, 0xff
-	cDesert.r, cDesert.g, cDesert.b = 0xf4, 0xa4, 0x60
-	cForest.r, cForest.g, cForest.b = 0x22, 0x8b, 0x22
-	cMountain.r, cMountain.g, cMountain.b= 0xa0, 0x52, 0x5d
-	cOceanBlue.r,cOceanBlue.g,cOceanBlue.b = 0x1e, 0x90, 0xff
-	cOlive.r, cOlive.g, cOlive.b = 0x80, 0x80, 0x00
-	cOrange.r, cOrange.g, cOrange.b = 0xff, 0xa5, 0x00
-	cPlain.r,cPlain.g,cPlain.b = 0xff, 0xde, 0xad
-	cSixteen.r, cSixteen.g, cSixteen.b = 0xcd, 0x85, 0x3f
-	cSwamp.r, cSwamp.g, cSwamp.b = 0x9a, 0xcd, 0x32
-}
-func (c Color) ToRGB() (r,g,b float64) {
+func (c Color) ToRGB() color.Color {
 	switch c {
 	case ColorOcean:
-		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
-	case ColorTwo:
-		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
-	case ColorThree:
-		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
-	case ColorFour:
-		return cOceanBlue.r,cOceanBlue.g,cOceanBlue.b
+		return cOceanBlue
+	case ColorOceanTwo:
+		return cOceanBlue
+	case ColorOceanThree:
+		return cOceanBlue
+	case ColorOceanFour:
+		return cOceanBlue
 	case ColorPlain:
-		return cPlain.r, cPlain.g, cPlain.b
-	case ColorSix:
-		return cPlain.r, cPlain.g, cPlain.b
+		return cPlain
+	case ColorPlainTwo:
+		return cPlain
 	case ColorDesert:
-		return cDesert.r, cDesert.g, cDesert.b
-	case ColorEight:
-		return cDesert.r, cDesert.g, cDesert.b
+		return cDesert
+	case ColorDesertTwo:
+		return cDesert
 	case ColorMountain:
-		return cMountain.r, cMountain.g, cMountain.b
-	case ColorTen:
-		return cMountain.r, cMountain.g, cMountain.b
+		return cMountain
+	case ColorMountainTwo:
+		return cMountain
 	case ColorSwamp:
-		return cSwamp.r, cSwamp.g, cSwamp.b
-	case ColorTwelve:
-		return cSwamp.r, cSwamp.g, cSwamp.b
+		return cSwamp
+	case ColorSwampTwo:
+		return cSwamp
 	case ColorForest:
-		return cForest.r, cForest.g, cForest.b
-	case ColorFourteen:
-		return cForest.r, cForest.g, cForest.b
-	case ColorSixteen:
-		return cSixteen.r, cSixteen.g, cSixteen.b
-	case ColorNineteen:
-		return cOlive.r, cOlive.g, cOlive.b
-	case ColorNegOne:
-		return cOrange.r, cOrange.g, cOrange.b
+		return cForest
+	case ColorForestTwo:
+		return cForest
+	case ColorMountainThree:
+		return cSixteen
+	case ColorForestThree:
+		return cOlive
+	case ColorOrange:
+		return cOrange
 	}
-	return cAliceBlue.r, cAliceBlue.g, cAliceBlue.b
+	return cAliceBlue
 }
