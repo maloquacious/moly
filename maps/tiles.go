@@ -20,7 +20,7 @@ package maps
 
 import (
 	"fmt"
-	"github.com/maloquacious/moly/enums"
+	"github.com/playbymail/moly/enums"
 	"math/rand"
 	"unicode"
 )

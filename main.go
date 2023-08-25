@@ -19,10 +19,10 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/maloquacious/moly/cli"
-	"github.com/maloquacious/moly/engine"
-	"github.com/maloquacious/moly/store/jsdb"
+	"github.com/playbymail/moly/cli"
+	"github.com/playbymail/moly/engine"
+	"github.com/playbymail/moly/pkg/dot"
+	"github.com/playbymail/moly/store/jsdb"
 	"log"
 	"math/rand"
 	"os"
@@ -30,12 +30,15 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(".env.local"); err != nil {
+	started := time.Now()
+
+	rand.Seed(started.UnixNano())
+
+	log.SetFlags(log.LstdFlags | log.LUTC)
+
+	if err := dot.Load("MOLY", true, true); err != nil {
 		log.Fatalf("main: %+v\n", err)
 	}
-
-	started := time.Now()
-	rand.Seed(started.UnixNano())
 
 	rv := 0
 	if err := cli.Execute(); err != nil {

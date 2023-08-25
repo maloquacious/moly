@@ -65,35 +65,6 @@ var cmdRoot = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the root Command.
 func Execute() error {
-	return cmdRoot.Execute()
-}
-
-var argsRoot struct {
-	acct_flag          bool
-	add_flag           bool
-	art_flag           bool
-	combat_test_flag   bool
-	eat_flag           bool
-	flush_always       bool
-	immed_after        bool
-	immediate          bool
-	inhibit_add_flag   bool
-	libdir             string
-	lore_flag          bool
-	mail_now           bool
-	map_flag           bool
-	map_test_flag      bool
-	pretty_data_files  bool
-	run_flag           bool
-	save_flag          bool
-	test_prng_flag     bool
-	test_lists_flag    bool
-	testJsonLoad       bool
-	time_self          bool
-	unspool_first_flag bool
-}
-
-func init() {
 	//fprintf(stderr, "usage: moly [options]\n");
 	//fprintf(stderr, "  -a        Add new players mode\n");
 	//fprintf(stderr, "  -e        Eat orders from libdir/spool\n");
@@ -134,4 +105,58 @@ func init() {
 	cmdRoot.Flags().BoolVar(&argsRoot.testJsonLoad, "test-json-load", false, "test load from json store")
 	cmdRoot.Flags().BoolVar(&argsRoot.test_lists_flag, "t", false, "set test-lists-flag")
 	cmdRoot.Flags().BoolVar(&argsRoot.test_prng_flag, "R", false, "set test-prng-flag")
+
+	cmdRoot.AddCommand(cmdGenerate)
+
+	cmdGenerate.AddCommand(cmdGenerateMap)
+	// inputs
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.mapFileName, "map-data", "worldmap.txt", "map data to import")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.cityFileName, "city-data", "cities.json", "city name data to import")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.landFileName, "land-data", "lands.json", "land data to import")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.regionFileName, "region-data", "regions.json", "region data to import")
+	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.noColor, "no-color", argsGenerateMap.noColor, "do not color map")
+	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.noScale, "no-scale", argsGenerateMap.noScale, "do not scale map")
+	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.createPNG, "create-png", argsGenerateMap.createPNG, "create a png of the map")
+	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.createSVG, "create-svg", argsGenerateMap.createSVG, "create an svg of the map")
+	// outputs
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.continentFileName, "continent-data", "continents.json", "continent data to export")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.locationFileName, "location-data", "locations.json", "location data to export")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.gateFileName, "gate-data", "gates.json", "gate data to export")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.roadFileName, "road-data", "roads.json", "road data to export")
+	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.seedFileName, "seed-data", "randseed.json", "random seed data to export")
+
+	cmdRoot.AddCommand(cmdServe)
+	cmdServe.Flags().StringVar(&argsServe.host, "host", argsServe.host, "host to bind to")
+	cmdServe.Flags().StringVar(&argsServe.port, "port", argsServe.port, "port to listen on")
+	cmdServe.Flags().StringVar(&argsServe.public, "public", argsServe.public, "path to public files")
+	if err := cmdServe.MarkFlagRequired("public"); err != nil {
+		panic(err)
+	}
+
+	return cmdRoot.Execute()
+}
+
+var argsRoot struct {
+	acct_flag          bool
+	add_flag           bool
+	art_flag           bool
+	combat_test_flag   bool
+	eat_flag           bool
+	flush_always       bool
+	immed_after        bool
+	immediate          bool
+	inhibit_add_flag   bool
+	libdir             string
+	lore_flag          bool
+	mail_now           bool
+	map_flag           bool
+	map_test_flag      bool
+	pretty_data_files  bool
+	run_flag           bool
+	save_flag          bool
+	test_prng_flag     bool
+	test_lists_flag    bool
+	testJsonLoad       bool
+	time_self          bool
+	unspool_first_flag bool
 }

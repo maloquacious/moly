@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
-	"github.com/maloquacious/moly/enums"
+	"github.com/playbymail/moly/enums"
 	"golang.org/x/image/font/gofont/goregular"
 )
 

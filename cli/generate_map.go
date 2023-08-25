@@ -20,7 +20,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/maloquacious/moly/maps"
+	"github.com/playbymail/moly/maps"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -66,24 +66,4 @@ var argsGenerateMap struct {
 	regionFileName    string
 	roadFileName      string
 	seedFileName      string
-}
-
-func init() {
-	cmdGenerate.AddCommand(cmdGenerateMap)
-	// inputs
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.mapFileName, "map-data", "worldmap.txt", "map data to import")
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.cityFileName, "city-data", "cities.json", "city name data to import")
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.landFileName, "land-data", "lands.json", "land data to import")
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.regionFileName, "region-data", "regions.json", "region data to import")
-	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.noColor, "no-color", argsGenerateMap.noColor, "do not color map")
-	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.noScale, "no-scale", argsGenerateMap.noScale, "do not scale map")
-	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.createPNG, "create-png", argsGenerateMap.createPNG, "create a png of the map")
-	cmdGenerateMap.Flags().BoolVar(&argsGenerateMap.createSVG, "create-svg", argsGenerateMap.createSVG, "create an svg of the map")
-
-	// outputs
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.continentFileName, "continent-data", "continents.json", "continent data to export")
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.locationFileName, "location-data", "locations.json", "location data to export")
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.gateFileName, "gate-data", "gates.json", "gate data to export")
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.roadFileName, "road-data", "roads.json", "road data to export")
-	cmdGenerateMap.Flags().StringVar(&argsGenerateMap.seedFileName, "seed-data", "randseed.json", "random seed data to export")
 }
