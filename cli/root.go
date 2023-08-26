@@ -127,6 +127,7 @@ func Execute() error {
 
 	cmdRoot.AddCommand(cmdServe)
 	cmdServe.Flags().StringVar(&argsServe.host, "host", argsServe.host, "host to bind to")
+	cmdServe.Flags().BoolVar(&argsServe.logRequests, "log-requests", argsServe.logRequests, "log all requests")
 	cmdServe.Flags().StringVar(&argsServe.port, "port", argsServe.port, "port to listen on")
 	cmdServe.Flags().StringVar(&argsServe.public, "public", argsServe.public, "path to public files")
 	if err := cmdServe.MarkFlagRequired("public"); err != nil {

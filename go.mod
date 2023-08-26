@@ -7,6 +7,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/joho/godotenv v1.5.1
+	github.com/matryer/way v0.0.0-20180416093233-9632d0c407b0
 	github.com/spf13/cobra v1.7.0
 	golang.org/x/image v0.2.0
 )

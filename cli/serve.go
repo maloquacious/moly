@@ -19,12 +19,15 @@ package cli
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/playbymail/moly/middleware/static"
+	"github.com/playbymail/moly/middleware/ckpath"
+	"github.com/playbymail/moly/server"
 	"github.com/playbymail/moly/server/htmx"
+	"github.com/playbymail/moly/service/static"
 	"github.com/spf13/cobra"
 	"log"
 	"net"
 	"net/http"
+	"path/filepath"
 )
 
 // cmdServe runs the serve command
@@ -32,9 +35,15 @@ var cmdServe = &cobra.Command{
 	Use:   "serve",
 	Short: "run web server",
 	Run: func(cmd *cobra.Command, args []string) {
-		// server := &http.Server{
-		//	Addr:    ":8080",
-		// }
+		log.Printf("[serve] host   %q\n", argsServe.host)
+		log.Printf("[serve] port   %q\n", argsServe.port)
+		log.Printf("[serve] public %q\n", argsServe.public)
+
+		s := &http.Server{
+			Addr:    net.JoinHostPort(argsServe.host, argsServe.port),
+			Handler: server.Router(),
+		}
+
 		// serverCh := make(chan struct{})
 		// go func() {
 		//	log.Printf("[INFO] server is listening on %s\n", ":8080")
@@ -56,29 +65,43 @@ var cmdServe = &cobra.Command{
 		// // If we got this far, it was an interrupt, so don't exit cleanly
 		// os.Exit(2)
 
-		log.Printf("[serve] host   %q\n", argsServe.host)
-		log.Printf("[serve] port   %q\n", argsServe.port)
-		log.Printf("[serve] public %q\n", argsServe.public)
-
 		r := chi.NewRouter()
-		r.Use(middleware.Logger)
+		r.Use(ckpath.OnlyPrintableRunes)
+		if argsServe.logRequests {
+			r.Use(middleware.Logger)
+		}
 		r.Use(middleware.Heartbeat("/ping"))
-		r.Use(static.Static(argsServe.public))
 		r.Use(middleware.Recoverer)
 
-		r.Get("/", getIndex())
+		// static files
+		r.Get("/browserconfig.xml", static.Handler(argsServe.public, "browserconfig.xml"))
+		r.Get("/favicon.ico", static.Handler(argsServe.public, "favicon.ico"))
+		r.Get("/humans.txt", static.Handler(argsServe.public, "humans.txt"))
+		r.Get("/icon.png", static.Handler(argsServe.public, "icon.png"))
+		r.Get("/robots.txt", static.Handler(argsServe.public, "robots.txt"))
+		r.Get("/rules.html", static.Handler(argsServe.public, "rules.html"))
+		r.Get("/site.webmanifest", static.Handler(argsServe.public, "site.webmanifest"))
+		r.Get("/tile-wide.png", static.Handler(argsServe.public, "tile-wide.png"))
+		r.Get("/tile.png", static.Handler(argsServe.public, "tile.png"))
+		r.Get("/css/*", static.Handler(filepath.Join(argsServe.public, "css"), "main.css", "normalize.css"))
+		r.Get("/js/*", static.Handler(filepath.Join(argsServe.public, "js"), "htmx.min-1.9.4.js"))
 
 		// mount the api router
 		r.Mount("/api", htmx.Router())
 
-		_ = http.ListenAndServe(net.JoinHostPort(argsServe.host, argsServe.port), r)
+		r.Get("/", getIndex())
+
+		s.Handler = r
+
+		_ = http.ListenAndServe(s.Addr, s.Handler)
 	},
 }
 
 var argsServe = struct {
-	public string // path to public (static) files
-	host   string
-	port   string
+	public      string // path to public (static) files
+	host        string
+	port        string
+	logRequests bool
 }{
 	port: "3000",
 }
